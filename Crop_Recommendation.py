@@ -266,7 +266,7 @@ def run_crop_recommendation():
                     'Coconut': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_rZgOJry6Twt8urk4C1FTo6d6tEDyiIw39w&usqp=CAU',
                     'Mango': "https://i.pinimg.com/474x/70/bd/5f/70bd5f8fd50d30bfcab3ac0f27ff4202.jpg",
                     'Orange': "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b3Jhbmdlc3xlbnwwfHwwfHx8MA%3D%3D",
-                    "Pomegranate": "https://example.com/pomegranate.jpg",
+                    "Pomegranate": "https://thumbs.dreamstime.com/b/juicy-pomegranate-its-half-leaves-16537522.jpg",
                     "Banana": "https://media.istockphoto.com/id/173242750/photo/banana-bunch.jpg?s=612x612&w=0&k=20&c=MAc8AXVz5KxwWeEmh75WwH6j_HouRczBFAhulLAtRUU=",
                     "Grapes": "https://cf.ltkcdn.net/wine/images/std/165373-800x532r1-grapes.jpg",
                     "Peach": "https://www.shutterstock.com/image-photo/peaches-isolated-ripe-peach-half-260nw-2189388721.jpg",
