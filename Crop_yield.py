@@ -165,6 +165,8 @@ import warnings
 import dash as dsh
 import requests
 from PIL import Image, ImageDraw, ImageFont
+from geopy.geocoders import Nominatim
+import geocoder
 warnings.filterwarnings('ignore')
 
 data = pd.read_csv('crop_yield.csv')
@@ -187,17 +189,31 @@ for col in columns:
 
 data.drop(columns = ["Crop_Year"], inplace = True)
 
-def get_location():
-    # Using the IPinfo API to get location based on IP address
-    ipinfo_api_key = "a0b55644-ffe1-4c78-bf83-3ae35b2b72b9"
-    ipinfo_url = f"http://ipinfo.io?token={ipinfo_api_key}"
-    
-    # response = requests.get(ipinfo_url)
-    # data = response.json()
-    
-    # state = data.get("region")
-    return "Karnataka"
+def get_state_district(latitude, longitude):
+    geolocator = Nominatim(user_agent="geo_locator")
+    location = geolocator.reverse((latitude, longitude), language="en")
 
+    # Extract state and district from the location data
+    address = location.raw.get("address", {})
+    state = address.get("state", "")
+    
+
+    return state
+
+def get_user_location():
+    try:
+        location = geocoder.ip('me')
+        return location.latlng
+    except Exception as e:
+        st.error(f"Error getting location: {e}")
+        return None
+
+# Get the user's location
+user_location = get_user_location()
+latitude = user_location[0]
+longitude = user_location[1]
+
+# Automatic location detection using st.location
 def get_weather(city):
     # Using the OpenWeatherMap API to get weather information based on city name
     openweathermap_api_key = "d73ec4f18aca81c32b1836a8ac2506e0"
@@ -252,7 +268,7 @@ def get_season(month):
 # Example: Get the season for a specific month
 current_month = datetime.now().month
 current_season = get_season(current_month)
-current_state = get_location()
+current_state = get_state_district(latitude,longitude)
 
 
 
@@ -375,7 +391,7 @@ def Crop_yield():
         'other oilseeds', 'Other Cereals', 'Cowpea(Lobia)',
         'Oilseeds total', 'Guar seed', 'Other Summer Pulses', 'Moth'))
         season = current_season
-        state = get_location()
+        state = get_state_district(latitude,longitude)
         area = col2.number_input("Enter area (e.g., in ha)", min_value=1.0, max_value=10000000.0, value=6637.0, step=1.0, format="%f", help="Enter the area in Hacter")
         production = col1.number_input('Enter production (e.g., in kg)',value=area*0.03,min_value=100.0,max_value=area*1.5,step=10.0)
         annual_rainfall = col2.number_input('Enter annual rainfall (e.g., in mm)',value=2051.4,min_value=100.0,max_value=2500.0,step=100.0)
