@@ -102,7 +102,7 @@ def disease_predict(image_path):
     if image is not None:
         try:
             pred = loaded_model.predict(tf.expand_dims(image, axis=0))
-            if max(pred[0]) >= 0.98:
+            if max(pred[0]) >= 0.90:
                predicted_value = class_names[pred.argmax()]
                display_prediction(predicted_value, image)
             else:
