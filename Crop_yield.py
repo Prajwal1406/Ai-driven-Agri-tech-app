@@ -215,7 +215,7 @@ def apiip_net_request():
         print("Unable to retrieve user IP.")
 
 
-
+IP = get_user_ip()
 state_name = apiip_net_request()
 
 
@@ -401,7 +401,7 @@ def Crop_yield():
         annual_rainfall = col2.number_input('Enter annual rainfall (e.g., in mm)',value=2051.4,min_value=200.0,max_value=2500.0,step=100.0)
         fertilizer = col1.number_input('Enter fertilizer (e.g., in g)',value=631643.29,min_value=1.0,max_value=10000000.0,step=10.0)
         pesticide = col2.number_input('Enter pesticide (e.g., in g)',value=2057.47,min_value=1.0,max_value=10000000.0,step=10.0)
-        st.write(state)
+        st.write(State,IP)
         prediction = ''
         
         if st.button('Submit'):
