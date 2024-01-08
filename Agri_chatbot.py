@@ -51,7 +51,7 @@ def chatbot():
     if selected_language == "English":
         options = [ "Weather Forecast", "Crop Disease", "Crop Yield", "Crop Recommendation", "Insurance", "How are you"]
         prebuilt_option = st.selectbox("Select an option", options)
-        if prebuilt_option  == "Select an option":
+        if prebuilt_option  != "Select an option":
             
             # Add user message to chat history
             st.session_state.messages.append({"role": "user", "content": prebuilt_option})
