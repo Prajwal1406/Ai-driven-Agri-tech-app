@@ -189,7 +189,7 @@ for col in columns:
 
 data.drop(columns = ["Crop_Year"], inplace = True)
 
-def get_state_district(latitude, longitude):
+def get_state_district(user_location):
     geolocator = Nominatim(user_agent="geo_locator")
     location = geolocator.reverse((latitude, longitude), language="en")
 
@@ -202,16 +202,16 @@ def get_state_district(latitude, longitude):
 
 def get_user_location():
     try:
-        location = geocoder.ip('me')
-        return location.latlng
+        response = requests.get('https://ipapi.co/json/')
+        data = response.json()
+        return data.get('latitude'), data.get('longitude')
     except Exception as e:
-        st.error(f"Error getting location: {e}")
+        print(f"Error getting location: {e}")
         return None
 
-# Get the user's location
 user_location = get_user_location()
-latitude = user_location[0]
-longitude = user_location[1]
+st.write(user_location)
+
 
 # Automatic location detection using st.location
 def get_weather(city):
