@@ -196,10 +196,10 @@ def get_user_location():
         response = requests.get('https://ipapi.co/json/')
         data = response.json()
         st.write(data)
-        return data.get('region') or "Unknown Region"
+        return data.get('region') or "Karnataka"
     except Exception as e:
         st.error(f"Error getting location: {e}")
-        return "Unknown Region"
+        return "Karnataka"
 
 
 state_name = get_user_location()
