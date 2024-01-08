@@ -190,19 +190,33 @@ for col in columns:
 
 data.drop(columns = ["Crop_Year"], inplace = True)
 
-
-def get_user_location():
+def get_user_ip():
     try:
-        response = requests.get('https://ipapi.co/json/')
+        response = requests.get('https://api64.ipify.org?format=json')
         data = response.json()
-        st.write(data)
-        return data.get('region') or "Karnataka"
+        return data.get('ip')
     except Exception as e:
-        st.error(f"Error getting location: {e}")
-        return "Karnataka"
+        print(f"Error getting user IP: {e}")
+        return None
+
+def apiip_net_request():
+    user_ip = get_user_ip()
+    if user_ip:
+        access_key = '630523ff-348e-490e-b851-ab295b5ff3fd'
+        url = f'https://apiip.net/api/check?ip={user_ip}&accessKey={access_key}'
+        
+        try:
+            response = requests.get(url)
+            result = response.json()
+            return result.get('regionName')
+        except Exception as e:
+            print(f"Error making API request: {e}")
+    else:
+        print("Unable to retrieve user IP.")
 
 
-state_name = get_user_location()
+
+state_name = apiip_net_request()
 
 
 # Automatic location detection using st.location
