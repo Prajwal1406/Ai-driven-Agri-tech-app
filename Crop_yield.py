@@ -162,6 +162,7 @@ import seaborn as sns
 import pickle as pk
 import time
 import warnings
+import requests
 import dash as dsh
 import requests
 from PIL import Image, ImageDraw, ImageFont
@@ -189,16 +190,6 @@ for col in columns:
 
 data.drop(columns = ["Crop_Year"], inplace = True)
 
-def get_state_district(user_location):
-    geolocator = Nominatim(user_agent="geo_locator")
-    location = geolocator.reverse((latitude, longitude), language="en")
-
-    # Extract state and district from the location data
-    address = location.raw.get("address", {})
-    state = address.get("state")
-    
-
-    return state
 
 def get_user_location():
     try:
@@ -206,11 +197,28 @@ def get_user_location():
         data = response.json()
         return data.get('latitude'), data.get('longitude')
     except Exception as e:
-        print(f"Error getting location: {e}")
+        st.error(f"Error getting location: {e}")
+        return None
+
+def get_state_from_location(latitude, longitude):
+    try:
+        geolocator = Nominatim(user_agent="geo_locator")
+        location = geolocator.reverse((latitude, longitude), language="en")
+        address = location.raw.get("address", {})
+        state = address.get("state")
+        return state
+    except Exception as e:
+        st.error(f"Error getting state: {e}")
         return None
 
 user_location = get_user_location()
-st.write(user_location)
+
+if user_location:
+    state = get_state_from_location(user_location[0], user_location[1])
+    st.write("User State:", state)
+else:
+    st.write("Unable to retrieve user location.")
+
 
 
 # Automatic location detection using st.location
