@@ -407,7 +407,7 @@ def Crop_yield():
                 minallowed_limit = 1.0
                 minallowed = max(minallowed, minallowed_limit)
                 maxallowed = area * 3000
-                production = col1.number_input('Enter production (e.g., in kg)', value=max_allowed-1000, min_value=minallowed, max_value=maxallowed, step=10.0)
+                production = col1.number_input('Enter production (e.g., in kg)', value=(max_allowed-(10000)), min_value=minallowed, max_value=maxallowed, step=10.0)
                 annual_rainfall = col2.number_input('Enter annual rainfall (e.g., in mm)',value=2051.4,min_value=200.0,max_value=2500.0,step=100.0)
                 fertilizer = col1.number_input('Enter fertilizer (e.g., in g)',value=631643.29,min_value=1.0,max_value=10000000.0,step=10.0)
                 pesticide = col2.number_input('Enter pesticide (e.g., in g)',value=2057.47,min_value=1.0,max_value=10000000.0,step=10.0)
