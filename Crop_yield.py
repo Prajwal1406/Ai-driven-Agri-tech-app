@@ -189,7 +189,7 @@ for col in columns:
     data[col] = encoder.fit_transform(data[col])
 
 data.drop(columns = ["Crop_Year"], inplace = True)
-@st.cache(ttl=24*3600)
+
 def get_user_ip():
     try:
         response = requests.get('https://api64.ipify.org?format=json')
