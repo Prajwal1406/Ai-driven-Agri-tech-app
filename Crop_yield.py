@@ -402,7 +402,7 @@ def Crop_yield():
         state = 'Karnataka'
         try:
                 area = col2.number_input("Enter area (e.g., in ha)", min_value=1.0, max_value=10000000.0, value=6637.0, step=1.0, format="%f", help="Enter the area in Hacter")
-                minallowed = area * 1000
+                minallowed = area * 10
                 # Set a maximum limit for minallowed to avoid data leak error
                 minallowed_limit = 1.0
                 minallowed = max(minallowed, minallowed_limit)
