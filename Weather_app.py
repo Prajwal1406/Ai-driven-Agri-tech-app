@@ -46,7 +46,7 @@ def run_weather_app():
     st.title("City Weather Overview")
     try:
         global city_name
-        city_name = st.selectbox('Enter City',("Bagalkot", "Ballari", "Belagavi", "Bengaluru Rural", "Bengaluru Urban", "Bidar", "Chamarajanagar", "Chikkaballapur", "Chikkamagaluru", "Chitradurga", "Dakshina Kannada", "Davanagere", "Dharwad", "Gadag", "Hassan", "Haveri", "Kalaburagi", "Kodagu", "Kolar", "Koppal", "Mandya", "Mysuru", "Raichur", "Ramanagara", "Shivamogga", "Tumakuru", "Udupi", "Uttara Kannada", "Vijayapura","Yadgir"),key="unique_key_2")
+        city_name = st.selectbox('Enter City',("Bagalkot", "Ballari", "Belagavi", "Bidar", "Chamarajanagar", "Chikkaballapur", "Chikkamagaluru", "Chitradurga", "Dakshina Kannada", "Davanagere", "Dharwad", "Gadag", "Hassan", "Haveri", "Kalaburagi", "Kodagu", "Kolar", "Koppal", "Mandya", "Mysuru", "Raichur", "Ramanagara", "Shivamogga", "Tumakuru", "Udupi", "Uttara Kannada", "Vijayapura","Yadgir"),key="unique_key_2")
         
         if city_name:
             # api_key = "d73ec4f18aca81c32b1836a8ac2506e0"
