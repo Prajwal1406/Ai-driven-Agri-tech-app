@@ -44,24 +44,128 @@ def insurance_app():
             </style>
         """
         st.markdown(html_code, unsafe_allow_html=True)
-
 # season,scheme,state_name,district_name,area_insured,sum_insured,farmer_share,goi_share,state_share,iu_count
 # kharif,PMFBY,Andhra Pradesh,Anantapur,17.44,9493.41,453.87,285.46,285.46,85
-        
-        crop_insurance_sum_Raghu = pickle.load(open('crop_insurance_sum_Raghu.pkl','rb'))
+        @st.cache_resource
+        def load():
+            return  pickle.load(open('crop_insurance_sum_Raghu.pkl','rb'))
+        crop_insurance_sum_Raghu = load()
         # st.subheader('Enter Input Values')
         col1,col2 = st.columns([1,1])
         with col1:
-            season1 = st.text_input('Season', 'kharif',key=1)
+            season1 = st.selectbox('Season', ('kharif', 'rabi'),key=1)
         with col1:
-            scheme1 = st.text_input('Scheme', 'PMFBY',key=2)
+            scheme1 = st.selectbox('Scheme', ('PMFBY', 'WBCIS'),key=2)
         with col1:
             state_name1 = st.selectbox('State Name',('Assam' ,'Chhattisgarh', 'Goa' ,'Haryana',
                                                         'Himachal Pradesh', 'Karnataka', 'Kerala' ,'Madhya Pradesh' ,'Maharashtra',
                                                         'Meghalaya', 'Odisha', 'Puducherry', 'Rajasthan', 'Sikkim', 'Tamil Nadu',
                                                         'Tripura', 'Uttar Pradesh', 'Uttarakhand'),key=3)
         with col1:
-            district_name1 = st.text_input('District Name', "Mandya",key=4)
+            district_names = ('Anantapur', 'Chittoor', 'East Godavari', 'Guntur', 'Krishna',
+                'Kurnool', 'Prakasam','Srikakulam', 'Vizianagaram',
+                'West Godavari', 'Baksa', 'Barpeta', 'Bongaigaon', 'Cachar',
+                'Chirang', 'Darrang', 'Dhemaji', 'Dhubri', 'Dibrugarh', 'Goalpara',
+                'Golaghat', 'Hailakandi', 'Jorhat', 'Kamrup', 'Karbi Anglong',
+                'Karimganj', 'Lakhimpur', 'Nagaon', 'Nalbari', 'Sivasagar',
+                'Sonitpur', 'Tinsukia', 'Udalguri', 'Balod', 'Baloda Bazar',
+                'Balrampur', 'Bastar', 'Bemetara', 'Bijapur', 'Bilaspur',
+                'Dhamtari', 'Durg', 'Gariyaband', 'Janjgir-champa', 'Jashpur',
+                'Kondagaon', 'Korba', 'Mahasamund', 'Mungeli', 'Narayanpur',
+                'Raigarh', 'Raipur', 'Rajnandgaon', 'Sukma', 'Surajpur', 'Surguja',
+                'North Goa', 'South Goa', 'Banas Kantha', 'Patan', 'Ambala',
+                'Bhiwani', 'Faridabad', 'Fatehabad', 'Hisar', 'Jhajjar', 'Jind',
+                'Kaithal', 'Karnal', 'Kurukshetra', 'Mahendragarh', 'Palwal',
+                'Panchkula', 'Panipat', 'Rewari', 'Rohtak', 'Sirsa', 'Sonipat',
+                'Yamunanagar', 'Chamba', 'Hamirpur', 'Kangra', 'Kullu', 'Mandi',
+                'Shimla', 'Sirmaur', 'Solan', 'Una', 'Doda', 'Jammu', 'Kathua',
+                'Kishtwar', 'Rajouri', 'Ramban', 'Reasi', 'Samba', 'Udhampur',
+                'Bokaro', 'Chatra', 'Deoghar', 'Dhanbad', 'Dumka', 'Garhwa',
+                'Giridih', 'Godda', 'Gumla', 'Hazaribagh', 'Jamtara', 'Khunti',
+                'Latehar', 'Lohardaga', 'Pakur', 'Palamu', 'Ramgarh', 'Ranchi',
+                'Simdega', 'Ballari', 'Belagavi', 'Bengaluru Rural',
+                'Bengaluru Urban', 'Bidar', 'Chikkamagaluru', 'Chitradurga',
+                'Dakshina Kannada', 'Davangere', 'Dharwad', 'Gadag', 'Haveri',
+                'Kodagu', 'Kolar', 'Koppal', 'Mandya', 'Mysuru', 'Raichur',
+                'Ramanagara', 'Shivamogga', 'Tumakuru', 'Udupi', 'Vijayapura',
+                'Alappuzha', 'Ernakulam', 'Idukki', 'Kannur', 'Kasaragod',
+                'Kollam', 'Kottayam', 'Kozhikode', 'Malappuram', 'Palakkad',
+                'Pathanamthitta', 'Thiruvananthapuram', 'Thrissur', 'Wayanad',
+                'Agar Malwa', 'Alirajpur', 'Anuppur', 'Ashoknagar', 'Balaghat',
+                'Barwani', 'Betul', 'Bhind', 'Bhopal', 'Burhanpur', 'Chhatarpur',
+                'Chhindwara', 'Damoh', 'Datia', 'Dewas', 'Dhar', 'Dindori', 'Guna',
+                'Gwalior', 'Harda', 'Indore', 'Jabalpur', 'Jhabua', 'Katni',
+                'Mandla', 'Mandsaur', 'Morena', 'Neemuch', 'Panna', 'Raisen',
+                'Rajgarh', 'Ratlam', 'Rewa', 'Sagar', 'Satna', 'Sehore', 'Seoni',
+                'Shahdol', 'Shajapur', 'Sheopur', 'Shivpuri', 'Sidhi', 'Singrauli',
+                'Tikamgarh', 'Ujjain', 'Umaria', 'Vidisha', 'Akola', 'Amravati',
+                'Aurangabad', 'Bhandara', 'Chandrapur', 'Dhule', 'Gadchiroli',
+                'Hingoli', 'Jalgaon', 'Jalna', 'Kolhapur', 'Latur', 'Nagpur',
+                'Nanded', 'Nandurbar', 'Nashik', 'Osmanabad', 'Palghar',
+                'Parbhani', 'Pune', 'Ratnagiri', 'Sangli', 'Satara', 'Sindhudurg',
+                'Solapur', 'Thane', 'Wardha', 'Washim', 'Yavatmal', 'Anugul',
+                'Balangir', 'Baleshwar', 'Bargarh', 'Bhadrak', 'Cuttack',
+                'Dhenkanal', 'Gajapati', 'Ganjam', 'Jagatsinghapur', 'Jajapur',
+                'Jharsuguda', 'Kalahandi', 'Kandhamal', 'Kendrapara', 'Kendujhar',
+                'Khordha', 'Koraput', 'Malkangiri', 'Mayurbhanj', 'Nayagarh',
+                'Nuapada', 'Puri', 'Rayagada', 'Sambalpur', 'Sundargarh', 'Ajmer',
+                'Alwar', 'Banswara', 'Baran', 'Barmer', 'Bharatpur', 'Bhilwara',
+                'Bikaner', 'Bundi', 'Churu', 'Dausa', 'Dungarpur', 'Hanumangarh',
+                'Jaipur', 'Jaisalmer', 'Jhalawar', 'Jhunjhunu', 'Jodhpur',
+                'Karauli', 'Kota', 'Nagaur', 'Pali', 'Pratapgarh', 'Rajsamand',
+                'Sawai Madhopur', 'Sikar', 'Sirohi', 'Tonk', 'Udaipur', 'Ariyalur',
+                'Coimbatore', 'Cuddalore', 'Dharmapuri', 'Dindigul', 'Erode',
+                'Kanniyakumari', 'Karur', 'Krishnagiri', 'Madurai', 'Nagapattinam',
+                'Namakkal', 'Perambalur', 'Pudukkottai', 'Salem', 'Sivaganga',
+                'Thanjavur', 'The Nilgiris', 'Theni', 'Thiruvallur', 'Thiruvarur',
+                'Tiruchirappalli', 'Tirunelveli', 'Tiruppur', 'Tiruvannamalai',
+                'Vellore', 'Virudhunagar', 'Adilabad', 'Kamareddy', 'Karimnagar',
+                'Khammam', 'Mahabubabad', 'Mancherial', 'Medak', 'Nagarkurnool',
+                'Nalgonda', 'Nirmal', 'Nizamabad', 'Peddapalli', 'Ranga Reddy',
+                'Sangareddy', 'Siddipet', 'Suryapet', 'Vikarabad', 'Wanaparthy',
+                'Agra', 'Aligarh', 'Ambedkar Nagar', 'Amethi', 'Amroha', 'Auraiya',
+                'Azamgarh', 'Baghpat', 'Bahraich', 'Ballia', 'Banda', 'Barabanki',
+                'Bareilly', 'Basti', 'Bhadohi', 'Bijnor', 'Budaun', 'Bulandshahr',
+                'Chandauli', 'Chitrakoot', 'Deoria', 'Etah', 'Etawah',
+                'Farrukhabad', 'Fatehpur', 'Firozabad', 'Gautam Buddha Nagar',
+                'Ghaziabad', 'Ghazipur', 'Gonda', 'Gorakhpur', 'Hapur', 'Hardoi',
+                'Hathras', 'Jalaun', 'Jaunpur', 'Jhansi', 'Kannauj',
+                'Kanpur Dehat', 'Kanpur Nagar', 'Kasganj', 'Kaushambi', 'Kheri',
+                'Kushi Nagar', 'Lalitpur', 'Lucknow', 'Mahoba', 'Mainpuri',
+                'Mathura', 'Mau', 'Meerut', 'Mirzapur', 'Moradabad',
+                'Muzaffarnagar', 'Pilibhit', 'Rae Bareli', 'Rampur', 'Saharanpur',
+                'Sambhal', 'Shahjahanpur', 'Shamli', 'Siddharth Nagar', 'Sitapur',
+                'Sonbhadra', 'Sultanpur', 'Unnao', 'Varanasi', 'Almora',
+                'Bageshwar', 'Chamoli', 'Champawat', 'Dehradun', 'Nainital',
+                'Pithoragarh', 'Rudra Prayag', 'Tehri Garhwal', 'Uttar Kashi',
+                'Alipurduar', 'Bankura', 'Birbhum', 'Jalpaiguri', 'Jhargram',
+                'Kalimpong', 'Maldah', 'Murshidabad', 'Nadia', 'Paschim Bardhaman',
+                'Purba Bardhaman', 'Kokrajhar', 'Arvalli', 'Bharuch', 'Bhavnagar',
+                'Gandhinagar', 'Kheda', 'Mahesana', 'Panch Mahals', 'Porbandar',
+                'Surendranagar', 'Kinnaur', 'Karaikal', 'Ramanathapuram', 'Dhalai',
+                'Gomati', 'Khowai', 'North Tripura', 'Sepahijala', 'Unakoti',
+                'West Tripura', 'Dima Hasao', 'Ahmadabad', 'Niwari', 'Bishnupur',
+                'Chandel', 'Churachandpur', 'Imphal East', 'Imphal West',
+                'Senapati', 'Thoubal', 'East Khasi Hills', 'North Garo Hills',
+                'Ri Bhoi', 'South West Garo Hills', 'West Garo Hills',
+                'West Khasi Hills', 'Mulugu', 'Narayanpet', 'South Tripura',
+                'West Jaintia Hills', 'Chengalpattu', 'Kallakurichi', 'Ranipet',
+                'Tenkasi', 'Tirupathur', 'Anantnag', 'Biswanath', 'Hojai',
+                'Kamrup Metro', 'Majuli', 'Marigaon', 'South Salmara Mancachar',
+                'West Karbi Anglong', 'Ukhrul', 'Mayiladuthurai',
+                'Alluri Sitharama Raju', 'Anakapalli', 'Annamayya', 'Bapatla',
+                'Eluru', 'Kakinada', 'Nandyal', 'Ntr', 'Palnadu',
+                'Parvathipuram Manyam', 'Spsr Nellore', 'Sri Sathya Sai',
+                'Tirupati', 'Visakhapatanam', 'Bajali', 'Charaideo', 'Dantewada',
+                'Gaurella Pendra Marwahi', 'Kabirdham', 'Kanker', 'Korea',
+                'Gurugram', 'Nuh', 'Lahul And Spiti', 'East Nimar', 'Khargone',
+                'Narsinghpur', 'Ahmednagar', 'Beed', 'Buldhana', 'Gondia',
+                'Raigad', 'Tamenglong', 'South Garo Hills', 'Boudh', 'Deogarh',
+                'Nabarangpur', 'Sonepur', 'Pondicherry', 'Chittorgarh', 'Dholpur',
+                'Jalore', 'Gangtok', 'Gyalshing', 'Namchi', 'Ayodhya',
+                'Maharajganj', 'Prayagraj', 'Shravasti', 'Haridwar',
+                'Pauri Garhwal', 'Kanchipuram', 'Tuticorin', 'Villupuram')
+            district_name1 = st.selectbox('District Name',district_names,key=4)
         with col2:
             area_insured1 = st.number_input('Total Area Covered for Insurence', value=17.44,min_value=1.0,max_value=3777.0,step=1.0,key=5)
         with col2:
@@ -117,21 +221,22 @@ def insurance_app():
 
 # season,scheme,state_name,district_name,area_insured,sum_insured,farmer_share,goi_share,state_share,iu_count,gross_premium
 # kharif,PMFBY,Andhra Pradesh,Anantapur,17.44,9493.41,453.87,285.46,285.46,85,1024.79
-        
-        crop_grosspremimum = pickle.load(open('crop_grosspremimum_Jp.pkl','rb'))
+        def loada():
+            return pickle.load(open('crop_grosspremimum_Jp.pkl','rb'))
+        crop_grosspremimum = loada()
         # st.subheader('Enter Input Values')
         col1,col2 = st.columns([1,1])
         with col1:
-            season = st.text_input('Season', 'kharif')
+            season = st.selectbox('Season', ('kharif', 'rabi'))
         with col1:
-            scheme = st.text_input('Scheme', 'PMFBY')
+            scheme = st.selectbox('Scheme', ('PMFBY', 'WBCIS'))
         with col1:
             state_name = st.selectbox('State Name',('Assam' ,'Chhattisgarh', 'Goa' ,'Haryana',
                                                         'Himachal Pradesh', 'Karnataka', 'Kerala' ,'Madhya Pradesh' ,'Maharashtra',
                                                         'Meghalaya', 'Odisha', 'Puducherry', 'Rajasthan', 'Sikkim', 'Tamil Nadu',
                                                         'Tripura', 'Uttar Pradesh', 'Uttarakhand'))
         with col1:
-            district_name = st.text_input('District Name', "Mandya")
+            district_name = st.text_input('District Name', district_names,key = 34)
         with col2:
             area_insured = st.number_input('Total Area Covered for Insurence', value=17.44,min_value=1.0,max_value=3777.0,step=1.0)
         with col2:

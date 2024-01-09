@@ -163,7 +163,6 @@ import pickle as pk
 import time
 import warnings
 import requests
-import dash as dsh
 import requests
 from PIL import Image, ImageDraw, ImageFont
 from geopy.geocoders import Nominatim
@@ -189,7 +188,7 @@ for col in columns:
     data[col] = encoder.fit_transform(data[col])
 
 data.drop(columns = ["Crop_Year"], inplace = True)
-st.cache_data
+@st.cache_data
 def get_user_ip():
     try:
         response = requests.get('https://api64.ipify.org?format=json')
