@@ -399,7 +399,7 @@ def Crop_yield():
         'Oilseeds total', 'Guar seed', 'Other Summer Pulses', 'Moth'))
         
         season = current_season
-        state = state_name
+        state = 'Karnataka'
         
         area = col2.number_input("Enter area (e.g., in ha)", min_value=1.0, max_value=10000000.0, value=6637.0, step=1.0, format="%f", help="Enter the area in Hacter")
         minallowed = area*0.03

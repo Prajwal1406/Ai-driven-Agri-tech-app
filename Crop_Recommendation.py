@@ -107,7 +107,10 @@ data["Crop"] = le.fit_transform(data["label"])
 
 data.drop(columns = ["label"], inplace = True)
 
-recommendation_model = pk.load(open('crop_recommendation.pickle','rb'))
+@st.cache_resource
+def recmod():
+    return pk.load(open('crop_recommendation.pickle','rb'))
+recommendation_model = recmod()
 
 def crop_encoding(Predicted_value):
     Predicted_value = (data_new[data.Crop == Predicted_value]["label"]).to_list()[0]
@@ -203,8 +206,12 @@ def run_crop_recommendation():
         try:
             weather_details = wa.get_weather_details(wa.city_name)
             # Load the trained model
-            with open('Soli_to_recommandation_model_Raghuu.pkl', 'rb') as file:
-                loaded_model = pk.load(file)
+            @st.cache_resource
+            def soli():
+                return pk.load(open('Soli_to_recommandation_model_Raghuu.pkl', 'rb'))
+            
+                
+            loaded_model = soli()
 
             # Streamlit UI
             # st.title("Crop Recommendation System")

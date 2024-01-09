@@ -117,7 +117,7 @@ def login_section():
 
             st.success("Login successful")
             st.experimental_set_query_params(logged_in=True)
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.warning(result)
 
