@@ -275,6 +275,10 @@ def get_season(month):
 current_month = datetime.now().month
 current_season = get_season(current_month)
 
+# Example: Get the season for a specific month
+current_month = datetime.now().month
+current_season = get_season(current_month)
+
 
 
 
