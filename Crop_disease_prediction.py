@@ -120,7 +120,7 @@ def display_prediction(predicted_value, image):
     treatment(predicted_value)
     # st.write(f"Image Shape: {image.shape}")
 
-def treatment(predicted_value):
+def treatment(predicted_value): 
     medicines = crop_medicines.get(predicted_value, [])
     st.subheader("Solution for this Disease:")
     st.write("Medicines:")
