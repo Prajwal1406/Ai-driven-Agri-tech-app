@@ -189,7 +189,7 @@ for col in columns:
     data[col] = encoder.fit_transform(data[col])
 
 data.drop(columns = ["Crop_Year"], inplace = True)
-@st.cache(ttl=24*3600)
+st.cache_data
 def get_user_ip():
     try:
         response = requests.get('https://api64.ipify.org?format=json')
@@ -409,8 +409,8 @@ def Crop_yield():
         annual_rainfall = col2.number_input('Enter annual rainfall (e.g., in mm)',value=2051.4,min_value=200.0,max_value=2500.0,step=100.0)
         fertilizer = col1.number_input('Enter fertilizer (e.g., in g)',value=631643.29,min_value=1.0,max_value=10000000.0,step=10.0)
         pesticide = col2.number_input('Enter pesticide (e.g., in g)',value=2057.47,min_value=1.0,max_value=10000000.0,step=10.0)
-        st.write(state)
-        st.write(IP)
+        # st.write(state)
+        # st.write(IP)
         prediction = ''
         
         if st.button('Submit'):
