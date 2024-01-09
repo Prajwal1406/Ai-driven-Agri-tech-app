@@ -9,7 +9,7 @@ import seaborn as sns
 import pickle as pk
 import time
 import warnings
-import dash as dsh
+import requests
 import requests
 from PIL import Image, ImageDraw, ImageFont
 from geopy.geocoders import Nominatim
@@ -35,30 +35,35 @@ for col in columns:
     data[col] = encoder.fit_transform(data[col])
 
 data.drop(columns = ["Crop_Year"], inplace = True)
-
-def get_state_district(latitude, longitude):
-    geolocator = Nominatim(user_agent="geo_locator")
-    location = geolocator.reverse((latitude, longitude), language="en")
-
-    # Extract state and district from the location data
-    address = location.raw.get("address", {})
-    state = address.get("state")
-    
-
-    return state
-
-def get_user_location():
+@st.cache_data
+def get_user_ip():
     try:
-        location = geocoder.ip('me')
-        return location.latlng
+        response = requests.get('https://api64.ipify.org?format=json')
+        data = response.json()
+        return data.get('ip')
     except Exception as e:
-        st.error(f"Error getting location: {e}")
+        print(f"Error getting user IP: {e}")
         return None
 
-# Get the user's location
-user_location = get_user_location()
-latitude = user_location[0]
-longitude = user_location[1]
+def apiip_net_request():
+    user_ip = get_user_ip()
+    if user_ip:
+        access_key = '630523ff-348e-490e-b851-ab295b5ff3fd'
+        url = f'https://apiip.net/api/check?ip={user_ip}&accessKey={access_key}'
+        
+        try:
+            response = requests.get(url)
+            result = response.json()
+            return result.get('regionName')
+        except Exception as e:
+            print(f"Error making API request: {e}")
+    else:
+        print("Unable to retrieve user IP.")
+
+
+IP = get_user_ip()
+state_name = apiip_net_request()
+
 
 # Automatic location detection using st.location
 def get_weather(city):
@@ -115,7 +120,10 @@ def get_season(month):
 # Example: Get the season for a specific month
 current_month = datetime.now().month
 current_season = get_season(current_month)
-current_state = get_state_district(latitude,longitude)
+
+# Example: Get the season for a specific month
+current_month = datetime.now().month
+current_season = get_season(current_month)
 
 
 
@@ -174,7 +182,6 @@ def Crop_yield():
                             'Maize (Corn)': 'https://plus.unsplash.com/premium_photo-1667047165840-803e47970128?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWFpemV8ZW58MHx8MHx8fDA%3D',
                             'Bajra (Pearl millet)': 'https://media.istockphoto.com/id/1400438871/photo/pear-millet-background.jpg?s=612x612&w=0&k=20&c=0GlBeceuX9Q_AZ0-CH57_A5s7_tD769N2f_jrbNcbrw=',
                             'Jowar (Sorghum)': 'https://media.istockphoto.com/id/1262684430/photo/closeup-view-of-a-white-millet-jowar.jpg?s=612x612&w=0&k=20&c=HLyBy06EjbABKybUy1nIQTfxMLV1-s4xofGigOdd6dU=',
-
                             'Barley': 'https://www.poshtik.in/cdn/shop/products/com1807851487263barley_Poshtik_c1712f8e-6b63-4231-9596-a49ce84f26ba.png?v=1626004318',
                             'Gram (Chickpea)': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHtf9ivxD23Bp_-VOY4H2tCRMC0_znhzyAEt2jfzvUlskEZcv0',
                             'Tur (Pigeonpea)': 'https://rukminim2.flixcart.com/image/850/1000/xif0q/plant-seed/f/l/n/25-pigeon-pea-for-planting-home-garden-farming-vegetable-kitchen-original-imaghphgmepkjqfz.jpeg?q=90',
@@ -237,14 +244,19 @@ def Crop_yield():
         'Sannhamp', 'Sunflower', 'Urad', 'Peas & beans (Pulses)',
         'other oilseeds', 'Other Cereals', 'Cowpea(Lobia)',
         'Oilseeds total', 'Guar seed', 'Other Summer Pulses', 'Moth'))
+        
         season = current_season
-        state = get_state_district(latitude,longitude)
+        state = 'Karnataka'
+        
         area = col2.number_input("Enter area (e.g., in ha)", min_value=1.0, max_value=10000000.0, value=6637.0, step=1.0, format="%f", help="Enter the area in Hacter")
-        production = col1.number_input('Enter production (e.g., in kg)',value=200.0,min_value=area*0.03,max_value=area*1.5,step=10.0)
+        minallowed = area*0.03
+        maxallowed = area*1.5
+        production = col1.number_input('Enter production (e.g., in kg)',value=200.0,min_value=minallowed,max_value=maxallowed,step=10.0)
         annual_rainfall = col2.number_input('Enter annual rainfall (e.g., in mm)',value=2051.4,min_value=200.0,max_value=2500.0,step=100.0)
         fertilizer = col1.number_input('Enter fertilizer (e.g., in g)',value=631643.29,min_value=1.0,max_value=10000000.0,step=10.0)
         pesticide = col2.number_input('Enter pesticide (e.g., in g)',value=2057.47,min_value=1.0,max_value=10000000.0,step=10.0)
-        st.write(state)
+        # st.write(state)
+        # st.write(IP)
         prediction = ''
         
         if st.button('Submit'):

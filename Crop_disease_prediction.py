@@ -1,10 +1,13 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-import tensorflow as tf
+import tensorflow as tf 
 from tensorflow.keras.models import load_model
 
 # Load the saved model from Google Drive
-loaded_model = load_model("model.h5")
+@st.cache_resource
+def load_model():
+    return load_model("model.h5")
+loaded_model = load_model
 class_names = ['Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
                'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew',
                'Cherry_(including_sour)___healthy', 'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot',
@@ -102,7 +105,7 @@ def disease_predict(image_path):
     if image is not None:
         try:
             pred = loaded_model.predict(tf.expand_dims(image, axis=0))
-            if max(pred[0]) >= 0.98:
+            if max(pred[0]) >= 0.90:
                predicted_value = class_names[pred.argmax()]
                display_prediction(predicted_value, image)
             else:

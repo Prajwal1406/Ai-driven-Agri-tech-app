@@ -2,10 +2,14 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import streamlit as st
 import warnings
 warnings.filterwarnings("ignore")
 
-data = pd.read_csv("Rain_Forecast.csv")
+@st.cache_data
+def datu():
+    return pd.read_csv("Rain_Forecast.csv")
+data = datu()
 data = data.set_index(data.Date)
 data.drop(columns = ["Date"], inplace = True)
 
