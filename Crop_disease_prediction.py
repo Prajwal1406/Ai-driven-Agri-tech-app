@@ -5,9 +5,10 @@ from tensorflow.keras.models import load_model
 
 # Load the saved model from Google Drive
 @st.cache_resource
-def load_model():
-    return load_model("model.h5")
-loaded_model = load_model
+def loadu():
+    reso = load_model("model.h5")
+    return reso
+loaded_model = loadu()
 class_names = ['Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
                'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew',
                'Cherry_(including_sour)___healthy', 'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot',
@@ -119,7 +120,7 @@ def display_prediction(predicted_value, image):
     treatment(predicted_value)
     # st.write(f"Image Shape: {image.shape}")
 
-def treatment(predicted_value):
+def treatment(predicted_value): 
     medicines = crop_medicines.get(predicted_value, [])
     st.subheader("Solution for this Disease:")
     st.write("Medicines:")
@@ -136,3 +137,6 @@ def disease_app():
         with open(img_path, "wb") as f:
             f.write(uploaded_file.read())
         disease_predict(img_path)
+
+# if __name__ == "__main__":
+    

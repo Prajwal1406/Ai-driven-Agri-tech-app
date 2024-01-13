@@ -236,7 +236,7 @@ def insurance_app():
                                                         'Meghalaya', 'Odisha', 'Puducherry', 'Rajasthan', 'Sikkim', 'Tamil Nadu',
                                                         'Tripura', 'Uttar Pradesh', 'Uttarakhand'))
         with col1:
-            district_name = st.text_input('District Name', district_names,key = 34)
+            district_name = st.selectbox('District Name', district_names,key = 34)
         with col2:
             area_insured = st.number_input('Total Area Covered for Insurence', value=17.44,min_value=1.0,max_value=3777.0,step=1.0)
         with col2:

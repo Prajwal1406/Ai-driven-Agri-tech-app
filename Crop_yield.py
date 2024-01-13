@@ -247,18 +247,20 @@ def Crop_yield():
         
         season = current_season
         state = 'Karnataka'
-        
-        area = col2.number_input("Enter area (e.g., in ha)", min_value=1.0, max_value=10000000.0, value=6637.0, step=1.0, format="%f", help="Enter the area in Hacter")
-        minallowed = area*0.03
-        maxallowed = area*1.5
-        production = col1.number_input('Enter production (e.g., in kg)',value=200.0,min_value=minallowed,max_value=maxallowed,step=10.0)
-        annual_rainfall = col2.number_input('Enter annual rainfall (e.g., in mm)',value=2051.4,min_value=200.0,max_value=2500.0,step=100.0)
-        fertilizer = col1.number_input('Enter fertilizer (e.g., in g)',value=631643.29,min_value=1.0,max_value=10000000.0,step=10.0)
-        pesticide = col2.number_input('Enter pesticide (e.g., in g)',value=2057.47,min_value=1.0,max_value=10000000.0,step=10.0)
-        # st.write(state)
+        try:
+                area = col2.number_input("Enter area (e.g., in ha)", min_value=1.0, max_value=10000000.0, value=6637.0, step=1.0, format="%f", help="Enter the area in Hacter")
+                minallowed = area * 0.03
+                maxallowed = area * 1.5
+                
+                annual_rainfall = col2.number_input('Enter annual rainfall (e.g., in mm)',value=2051.4,min_value=200.0,max_value=2500.0,step=100.0)
+                fertilizer = col1.number_input('Enter fertilizer (e.g., in g)',value=631643.29,min_value=1.0,max_value=10000000.0,step=10.0)
+                pesticide = col2.number_input('Enter pesticide (e.g., in g)',value=2057.47,min_value=1.0,max_value=10000000.0,step=10.0)
+                # st.write(state)
         # st.write(IP)
+        except:
+            st.warning("Max area is more than limits")
         prediction = ''
-        
+        production = col1.number_input('Enter production (e.g., in kg)', value=minallowed, min_value=minallowed, max_value=maxallowed, step=10.0)
         if st.button('Submit'):
             encode = encoding([crop, season, state, area, production, annual_rainfall, fertilizer, pesticide])
             try:
